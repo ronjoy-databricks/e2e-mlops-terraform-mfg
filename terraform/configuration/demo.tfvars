@@ -47,10 +47,10 @@ nsg = {
         }
     }
 
-    private_link_subnet = "/subscriptions/58f627af-5f2f-4f24-b8b3-67712c182a5c/resourceGroups/rg-raghav-demo/providers/Microsoft.Network/virtualNetworks/raghav-demo-vnet/subnets/privatelink_subnet"
+    private_link_subnet = ""
 
-    fw_subnet_id = "/subscriptions/58f627af-5f2f-4f24-b8b3-67712c182a5c/resourceGroups/rg-raghav-demo/providers/Microsoft.Network/virtualNetworks/raghav-demo-vnet/subnets/AzureFirewallSubnet"
+    fw_subnet_id = ""
 
-    rt_public_subnet = "/subscriptions/58f627af-5f2f-4f24-b8b3-67712c182a5c/resourceGroups/rg-raghav-demo/providers/Microsoft.Network/virtualNetworks/raghav-demo-vnet/subnets/public_subnet"
+    rt_public_subnet = ""
     
-    rt_private_subnet = "/subscriptions/58f627af-5f2f-4f24-b8b3-67712c182a5c/resourceGroups/rg-raghav-demo/providers/Microsoft.Network/virtualNetworks/raghav-demo-vnet/subnets/private_subnet"
+    rt_private_subnet = ""

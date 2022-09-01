@@ -41,8 +41,8 @@ module "network" {
   depends_on     = [module.rg]
 }
 
-module "adb" {
-  source                                               = "./modules/adb"
+module "databricks" {
+  source                                               = "./modules/databricks"
   owner_custom                                         = var.owner_custom
   purpose_custom                                       = var.purpose_custom
   location                                             = var.location
@@ -64,23 +64,12 @@ module "keyvault" {
   vnet_id             = module.network.vnet_id
 }
 
-
-module "db" {
-  source              = "./modules/db"
-  owner_custom        = var.owner_custom
-  purpose_custom      = var.purpose_custom
-  location            = var.location
-  private_link_subnet = module.network.private_link_subnet
-  key_vault_id        = module.keyvault.kv_id
-  vnet_id             = module.network.vnet_id
-}
-
-module "firewall" {
-  source = "./modules/firewall"
-  owner_custom        = var.owner_custom
-  purpose_custom      = var.purpose_custom
-  location            = var.location 
-  fw_subnet_id = module.network.firewall_subnet
-  rt_public_subnet = module.network.public_subnet_id
-  rt_private_subnet = module.network.private_subnet_id
-}
+# module "firewall" {
+#   source = "./modules/firewall"
+#   owner_custom        = var.owner_custom
+#   purpose_custom      = var.purpose_custom
+#   location            = var.location 
+#   fw_subnet_id = module.network.firewall_subnet
+#   rt_public_subnet = module.network.public_subnet_id
+#   rt_private_subnet = module.network.private_subnet_id
+# }

@@ -1,11 +1,20 @@
 terraform {
     required_providers {
       databricks = {
-       source = "databrickslabs/databricks"
-       version = "=0.5.9"
+       source = "databricks/databricks"
     }
   }
 }
+
+provider "databricks" {
+  host                        = data.azurerm_databricks_workspace.this.workspace_url
+  azure_workspace_resource_id = azurerm_databricks_workspace.this.id
+
+  # ARM_USE_MSI environment variable is recommended
+  azure_use_msi = true
+}
+
+data "databricks_current_user" "me" {}
 
 locals {
   resource_group_name = format("rg-%s-%s", var.owner_custom, var.purpose_custom)
@@ -57,20 +66,6 @@ resource "databricks_cluster" "shared_autoscaling" {
     max_workers = 2
   }
   spark_conf = {
-    "spark.databricks.io.cache.enabled" : true,
-    "spark.hadoop.javax.jdo.option.ConnectionDriverName" : "com.microsoft.sqlserver.jdbc.SQLServerDriver",
-    "spark.hadoop.javax.jdo.option.ConnectionURL" : "jdbc:sqlserver://sqlserver-raghav-demo.database.windows.net:1433;database=metastoredb"
-    "spark.databricks.delta.preview.enabled" : true,
-    "spark.hadoop.javax.jdo.option.ConnectionUserName" : data.azurerm_key_vault_secret.db-un.value,
-    "datanucleus.fixedDatastore" : false,
-    "spark.hadoop.javax.jdo.option.ConnectionPassword" : data.azurerm_key_vault_secret.db-pw.value,
-    "spark.driver.maxResultSize" : "32gb", 
-    "datanucleus.autoCreateSchema" : true,
-    "spark.sql.hive.metastore.jars" : "builtin",
-    "hive.metastore.schema.verification" : false,
-    "datanucleus.schema.autoCreateTables" : true,
-    "spark.sql.hive.metastore.version" : "2.3.9"
-
 
   }
 }
