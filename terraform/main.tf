@@ -1,14 +1,11 @@
 terraform {
-  backend "azurerm" {
+  backend "local" {
+    path = "./terraform.tfstate"
   }
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "=2.94.0"
-    }
-    databricks = {
-      source  = "databrickslabs/databricks"
-      version = "=0.5.9"
+      version = "~>3.20.0"
     }
   }
 }
@@ -17,9 +14,14 @@ provider "azurerm" {
   features {}
 }
 
-provider "databricks" {
-  azure_workspace_resource_id = module.adb.adb_id
-}
+# provider "databricks" {
+#   host                        = data.azurerm_databricks_workspace.this.workspace_url
+#   azure_workspace_resource_id = azurerm_databricks_workspace.this.id
+
+#   # ARM_USE_MSI environment variable is recommended
+#   azure_use_msi = true
+# }
+
 module "rg" {
   source         = "./modules/resource-group"
   owner          = var.owner
