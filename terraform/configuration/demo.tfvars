@@ -1,6 +1,6 @@
 #Referenced common across modules
 owner_custom = "ron"
-purpose_custom = "demo"
+purpose_custom = "terraform-mlops"
 
 #Referenced in resource-group module
 owner = "ron.joy@databricks.com"
@@ -27,12 +27,6 @@ subnets = {
     subnet3 = {
         name = "privatelink_subnet"
         address_space = ["10.10.1.128/26"]
-        subnet_delegation = false
-        }
-    
-    subnet4 = {
-        name = "AzureFirewallSubnet"
-        address_space = ["10.10.1.192/26"]
         subnet_delegation = false
         }
 }

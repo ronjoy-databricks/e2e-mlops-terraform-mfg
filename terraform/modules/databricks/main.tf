@@ -14,17 +14,6 @@ data "databricks_spark_version" "latest_lts" {
   long_term_support = true
 }
 
-data "azurerm_key_vault_secret" "db-un" {
-  name         = "db-username"
-  key_vault_id = var.key_vault_id
-}
-
-
-data "azurerm_key_vault_secret" "db-pw" {
-  name         = "db-password"
-  key_vault_id = var.key_vault_id
-}
-
 resource "azurerm_databricks_workspace" "adb" {
   name                = format("adb-%s-%s", var.owner_custom, var.purpose_custom)
   resource_group_name = local.resource_group_name
@@ -41,6 +30,10 @@ resource "azurerm_databricks_workspace" "adb" {
   }
 }
 
+provider "databricks" {
+  host = azurerm_databricks_workspace.adb.workspace_url
+}
+
 
 resource "databricks_cluster" "shared_autoscaling" {
   cluster_name            = format("%s-%s-cluster", var.owner_custom, var.purpose_custom)
@@ -54,6 +47,18 @@ resource "databricks_cluster" "shared_autoscaling" {
   spark_conf = {
 
   }
+}
+
+# resource "databricks_notebook" "ddl" {
+#   provider = databricks.adb
+#   path = "/mlops"
+#   source   = "${path.root}/../notebooks/demo_setup.py"
+# }
+
+resource "databricks_notebook" "mlops" {
+  for_each = fileset(path.root, "/../notebooks/*")
+  path = "/${basename(each.value)}"
+  source = "${path.root}/${each.value}"
 }
 
 # resource "databricks_secret_scope" "kv" {
